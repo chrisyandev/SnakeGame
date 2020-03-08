@@ -1,0 +1,12 @@
+#board {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+}
+
+span {
+    width: 32px;
+    height: 32px;
+}
