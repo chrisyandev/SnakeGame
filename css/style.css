@@ -7,6 +7,10 @@
 }
 
 span {
+    display: block;
     width: 32px;
     height: 32px;
+    
+    /* Removes spaces in between rows */
+    float: left;
 }

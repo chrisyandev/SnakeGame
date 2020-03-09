@@ -1,98 +1,69 @@
-// const s = require('./Snake.js');
-// const Snake = s.Snake;
-// const readline = require('readline').createInterface({
-//     input: process.stdin,
-//     output: process.stdout
-// });
-
+let game;
 let board;
 let snake;
+let head;
 let ticker;
-let currentDirection = 'LEFT';
+
+// Without this flag, user can move in the opposite 
+// direction (which is not what we want) if they
+// press the arrow keys quickly.
+let canChangeDirection = true;
 
 function start() {
-    board = new Board(10, 10);
-    snake = new Snake({x: 5, y: 5}, {x: 4, y: 5});
+    game = new Game(10, 10, 5, 7, 'UP');
+    board = game.board;
+    snake = game.snake;
+    head = snake.head;
     document.addEventListener("keydown", changeDirection);
-    setInterval(update, 500);
+    ticker = setInterval(update, 500);
     board.create();
+    game.render();
+
+    // TODO: Set initial size of snake while making sure it stays inside the board
+    snake.move()
+    snake.append();
+    snake.move()
+    snake.append();
+    snake.move()
+    snake.append();
 }
 
 function update() {
-    snake.move(currentDirection);
+    snake.move();
+    game.render();
+    canChangeDirection = true;
 }
 
 function changeDirection(e) {
+    if (!canChangeDirection) {
+        return;
+    }
     switch (e.keyCode) {
         case 37:
-            currentDirection = 'LEFT';
+            if (head.direction != 'RIGHT') {
+                head.setDirection('LEFT');
+                canChangeDirection = false;
+            }
+            break;
         case 38:
-            currentDirection = 'UP';
+            if (head.direction != 'DOWN') {
+                head.setDirection('UP');
+                canChangeDirection = false;
+            }
+            break;
         case 39:
-            currentDirection = 'RIGHT';
+            if (head.direction != 'LEFT') {
+                head.setDirection('RIGHT');
+                canChangeDirection = false;
+            }
+            break;
         case 40:
-            currentDirection = 'DOWN';
+            if (head.direction != 'UP') {
+                head.setDirection('DOWN');
+                canChangeDirection = false;
+            }
+            break;
     }
 }
 
-start();
-
-
-// console.log(snake.tail);
-
-// console.log(snake.asArray());
-// snake.visualise(10, 10);
-//
-// snake.move('DOWN');
-// console.log(snake.asArray());
-// snake.visualise(10, 10);
-//
-// snake.move('LEFT');
-// console.log(snake.asArray());
-// snake.visualise(10, 10);
-//
-// snake.increaseLength();
-// console.log(snake.asArray());
-// snake.visualise(10, 10);
-//
-// snake.move('DOWN');
-// console.log(snake.asArray());
-// snake.visualise(10, 10);
-//
-// snake.increaseLength();
-// console.log(snake.asArray());
-// snake.visualise(10, 10);
-//
-// snake.move();
-// console.log(snake.asArray());
-// snake.visualise(10, 10);
-//
-// snake.move('RIGHT');
-// console.log(snake.asArray());
-// snake.visualise(10, 10);
-//
-// snake.increaseLength();
-// console.log(snake.asArray());
-// snake.visualise(10, 10);
-//
-// snake.increaseLength();
-// console.log(snake.asArray());
-// snake.visualise(10, 10);
-//
-// snake.increaseLength();
-// console.log(snake.asArray());
-// snake.visualise(10, 10);
-//
-// snake.move('UP');
-// console.log(snake.asArray());
-// snake.visualise(10, 10);
-//
-// snake.move('LEFT');
-// console.log(snake.asArray());
-// snake.visualise(10, 10);
-//
-// snake.move('DOWN');
-// console.log(snake.asArray());
-// snake.visualise(10, 10);
-
-// console.log(snake.doesByteItself());
+window.onload = start;

@@ -1,129 +1,92 @@
-// const c = require('./Part');
-// const Part = c.Part;
-// const readline = require('readline');
-
-Snake = class Snake {
-    constructor(headPosition, tailPosition) {
-        this.types = {
-            HEAD: 'HEAD',
-            TAIL: 'TAIL',
-            BODY: 'BODY'
-        };
-
-        this.directions = {
-            LEFT: 'LEFT',
-            RIGHT: 'RIGHT',
-            TOP: 'TOP',
-            DOWN: 'DOWN'
-        };
-
-        this.head = new Part(this.types.HEAD, this.directions.LEFT, null);
-        this.tail = new Part(this.types.TAIL, this.directions.LEFT, this.head);
-        this.head.previous = this.tail;
-
-        this.head.position = headPosition;
-        this.tail.position = tailPosition;
+class Head {
+    constructor(x, y, direction) {
+        this.x = x;
+        this.y = y;
+        this.direction = direction;
+        this.next = null;
     }
 
-    move(direction) {
-        if (direction === undefined)
-            direction = this.head.direction;
-
-        // TODO: figure out why the code below doesn't work.
-        // this.iterate(part => {
-        //     if (part.next === null) {
-        //         part.directions = direction;
-        //         part.position = part.nextPosition();
-        //     } else {
-        //         part.position = Object.assign({}, part.next.position);
-        //     }
-        // });
-
-        let iterator = this.tail;
-        while (iterator != null) {
-            if (iterator.next === null) {
-                iterator.direction = direction;
-                iterator.position = iterator.nextPosition();
-            } else {
-                // For some reason, "iterator.position = iterator.next.position;"
-                // does not work. We have to assign each attribute individually or
-                // use "Object.assign()". Be careful about this pitfall.
-                iterator.position = Object.assign({}, iterator.next.position);
-            }
-            iterator = iterator.next;
-        }
-        if (this.isDead()) {
-            console.log("Whoa! you died");
+    nextPosition() {
+        switch (this.direction) {
+            case 'UP':
+                return {x: this.x, y: this.y - 1};
+            case 'DOWN':
+                return {x: this.x, y: this.y + 1};
+            case 'LEFT':
+                return {x: this.x - 1, y: this.y};
+            case 'RIGHT':
+                return {x: this.x + 1, y: this.y};
         }
     }
 
-    increaseLength() {
-        let newHead = new Part(this.types.HEAD, this.head.direction, null, null,
-            this.head.nextPosition());
-        this.head.next = newHead;
-        this.head.type = this.types.BODY;
-        newHead.previous = this.head;
-        this.head = newHead;
+    setDirection(direction) {
+        this.direction = direction;
+    }
+}
+
+class Part {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.next = null;
+    }
+}
+
+/** Creates a singly-linked list. */
+class Snake {
+    constructor(x, y, direction) {
+        this.head = new Head(x, y, direction);
+        this.tail = this.head;
+        this.tailLastPosX = undefined;
+        this.tailLastPosY = undefined;
+        this.length = 1;
     }
 
-    isDead() {
-        return this.doesBiteItself() || this.isOutOfBounds();
+    move() {
+        let nextPosition = this.head.nextPosition();
+        this.shift(this.head, nextPosition.x, nextPosition.y);
     }
 
-    doesBiteItself() {
-        let result = false;
-        this.iterate(part => {
-            if (part.type !== 'HEAD' && this.head.position.x === part.position.x
-                && this.head.position.y === part.position.y) {
-                result = true;
-            }
-        });
-        return result;
-    }
+    /**
+     * Shifts the head then shifts each node after.
+     * 
+     * Saves the head's initial position which will be empty after
+     * shifting it.
+     * 
+     * Before moving the next node, the next node's initial position 
+     * needs to be saved. Since 'emptyX' and 'emptyY' still hold needed
+     * values, 'x' and 'y' are used.
+     */
+    shift(head, x, y) {
+        let emptyX = head.x;
+        let emptyY = head.y;
+        head.x = x;
+        head.y = y;
 
-    isOutOfBounds() {
-        return false;
-    }
-
-    iterate(iteratee) {
-        let iterator = this.tail;
-        while (iterator != null) {
-            iteratee(iterator);
-            iterator = iterator.next;
+        let node = head;
+        while (node.next != null) {
+            x = emptyX;
+            y = emptyY;
+            emptyX = node.next.x;
+            emptyY = node.next.y;
+            node.next.x = x;
+            node.next.y = y;
+            node = node.next;
         }
+        this.tailLastPosX = emptyX;
+        this.tailLastPosY = emptyY;
     }
 
-    asArray() {
-        let result = [];
-        this.iterate(item => {
-            result.push(item.position);
-        });
-        return result;
+    /**
+     * Places a new node where snake's tail was before last move.
+     * Must call move() at least once before each append or the nodes
+     * will overlap.
+     */
+    append() {
+        let node = new Part(this.tailLastPosX, this.tailLastPosY);
+        this.tail.next = node;
+        this.tail = node;
+        this.length++;
     }
-
-    isOccupied(x, y) {
-        let result = false;
-        this.iterate(item => {
-            if (item.position.x === x && item.position.y === y) {
-                result = true;
-            }
-        });
-        return result;
-    }
-
-    // visualise(boardWidth, boardHeight) {
-    //     for (let i = 0; i < boardWidth; i++) {
-    //         let str = "";
-    //         for (let j = 0; j < boardHeight; j++) {
-    //             if (this.isOccupied(j, i)) {
-    //                 str += "@";
-    //             } else {
-    //                 str += "#";
-    //             }
-    //         }
-    //         console.log(str);
-    //     }
-    //     console.log("");
-    // }
-};
+}
 
