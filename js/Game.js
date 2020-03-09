@@ -8,8 +8,8 @@ class Game {
      * For every board cell, checks if its position matches with snake's
      * head position. Checks the positions of the parts following if no
      * match is found. If there's a match, sets the appropriate image.
-     * If the cell's position doesn't match with snake's head position
-     * or snake's parts positions, set the appropriate image.
+     * At the end, if 'matchFound' is still false, it means the cell
+     * is empty.
      */
     render() {
         let head = this.snake.head;

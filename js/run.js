@@ -4,9 +4,9 @@ let snake;
 let head;
 let ticker;
 
-// Without this flag, user can move in the opposite 
-// direction (which is not what we want) if they
-// press the arrow keys quickly.
+// Without this flag, user can move in the direct opposite
+// direction (which is not what we want) if they press the
+// arrow keys quickly.
 let canChangeDirection = true;
 
 function start() {
@@ -14,8 +14,10 @@ function start() {
     board = game.board;
     snake = game.snake;
     head = snake.head;
+
     document.addEventListener("keydown", changeDirection);
     ticker = setInterval(update, 500);
+    
     board.create();
     game.render();
 
