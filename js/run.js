@@ -18,9 +18,6 @@ function start() {
     document.addEventListener("keydown", changeDirection);
     ticker = setInterval(update, 500);
     
-    board.create();
-    game.render();
-
     // TODO: Set initial size of snake while making sure it stays inside the board
     snake.move()
     snake.append();
@@ -28,6 +25,9 @@ function start() {
     snake.append();
     snake.move()
     snake.append();
+
+    board.create();
+    game.render();
 }
 
 function update() {
