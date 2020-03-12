@@ -48,31 +48,30 @@ class Snake {
     }
 
     /**
-     * Shifts the head then shifts each node after.
+     * Starts at the head and saves its current position into 'emptyX'
+     * and 'emptyY' before shifting. Shifts the head.
      * 
-     * Saves the head's initial position which will be empty after
-     * shifting it.
+     * Copies the empty position into 'newX' and 'newY' to be used for
+     * the next node. Moves pointer to the next node.
      * 
-     * Before moving the next node, the next node's initial position 
-     * needs to be saved. Since 'emptyX' and 'emptyY' still hold needed
-     * values, 'x' and 'y' are used.
+     * The 'next' property of the last node in the list is null. So
+     * when node === null, we know the list has ended.
      */
-    shift(head, x, y) {
-        let emptyX = head.x;
-        let emptyY = head.y;
-        head.x = x;
-        head.y = y;
-
+    shift(head, newX, newY) {
         let node = head;
-        while (node.next != null) {
-            x = emptyX;
-            y = emptyY;
-            emptyX = node.next.x;
-            emptyY = node.next.y;
-            node.next.x = x;
-            node.next.y = y;
+        let emptyX;
+        let emptyY;
+
+        while (node !== null) {
+            emptyX = node.x;
+            emptyY = node.y;
+            node.x = newX;
+            node.y = newY;
+            newX = emptyX;
+            newY = emptyY;
             node = node.next;
         }
+
         this.tailLastPosX = emptyX;
         this.tailLastPosY = emptyY;
     }

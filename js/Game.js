@@ -6,10 +6,10 @@ class Game {
 
     /**
      * Starts by painting an empty board. Then places images for the
-     * head and the rest of the nodes in the list. Before setting the
-     * image, makes sure querySelector returned a span, because if any
-     * parts of the snake goes off the board, querySelector returns null
-     * and an error will occur due to getting children of null.
+     * snake's head and body parts. Before setting the image, makes
+     * sure querySelector didn't return null, because if any parts of
+     * the snake go off the board, querySelector returns null and an
+     * error will occur due to getting children of null.
      * 
      * Note: Since querySelector returns null when head goes off-screen,
      * we can use it to determine game over.
@@ -23,19 +23,16 @@ class Game {
             image.src = 'images/floor-1.png';
         }
 
-        let head = this.snake.head;
-        let span = document.querySelector('[x="' + head.x + '"][y="' +
-            head.y + '"]');
-        if (span != null) {
-            span.children[0].src = 'images/snake-head.png';
-        }
-
-        let node = head;
-        while (node.next != null) {
-            let span = document.querySelector('[x="' + node.next.x + '"][y="' +
-                node.next.y + '"]');
-            if (span != null) {
-                span.children[0].src = 'images/snake-body.png';
+        let node = this.snake.head;
+        while (node !== null) {
+            let span = document.querySelector('[x="' + node.x + '"][y="' +
+                node.y + '"]');
+            if (span !== null) {
+                if (node === this.snake.head) {
+                    span.children[0].src = 'images/snake-head.png';
+                } else {
+                    span.children[0].src = 'images/snake-body.png';
+                }
             }
             node = node.next;
         }
