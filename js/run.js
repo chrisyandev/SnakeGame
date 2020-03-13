@@ -32,12 +32,18 @@ function start() {
     snake.append();
 
     board.create();
+
     game.render();
+
+    // For rendering the board using this render3() you need to 
+    // remove 'board.create()' 
+    // game.render3(); 
 }
 
 function update() {
     snake.move();
-    game.render();
+    game.render(); 
+    // game.render3();
     canChangeDirection = true;
 }
 

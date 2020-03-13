@@ -87,5 +87,21 @@ class Snake {
         this.tail = node;
         this.length++;
     }
+
+    /**
+     * Gets coordinates of a point and returns true if a part of the snake's 
+     * body has the same position as that point. 
+     * This method is currently only used by Game.render3 method. 
+     */
+    isOccupied(x, y) {
+        let node = head; 
+        while (node !== null) {
+            if (node.x === x && node.y === y) {
+                return true; 
+            }
+            node = node.next; 
+        }
+        return false; 
+    }
 }
 

@@ -82,4 +82,49 @@ class Game {
             }
         }
     }
+
+    /**
+     * Render option3, uses an html table to display the board.
+     * 
+     * How it works: 
+     *  It goes through every cell on the board and checks if that cell 
+     *  is occupied by the snake, if it is occupied it paints it changed the 
+     *  color of that cell to blue. We can also use an image element to 
+     *  display the snake.
+     * 
+     * This is not as efficient as the other two options (altough the difference
+     * is not even noticable because board is small), but it uses a 
+     * neater approach. 
+     */
+    render3() {
+        if (this.table === undefined) {
+            this.createTable(); 
+        }
+        for (let i = 0; i < 10; i++) {
+            let row = this.table.rows[i];
+            for (let j = 0; j < 10; j++) {
+                let cell = row.cells[j];
+                if (this.snake.isOccupied(j, i)) {
+                    cell.style.backgroundColor = "red";
+                } else {
+                    cell.style.backgroundColor = "blue";
+                }
+            }
+        }
+    }
+
+    // Helper method for render3
+    createTable() {
+        let tableEl = document.createElement('table');
+        for (let i = 0; i < 10; i++) {
+            let rowEl = document.createElement('tr');
+            for (let j = 0; j < 10; j++) {
+                let cellEl = document.createElement('td');
+                rowEl.appendChild(cellEl);
+            }
+            tableEl.appendChild(rowEl);
+        }
+        this.table = tableEl; 
+        document.body.appendChild(this.table); 
+    }
 }
