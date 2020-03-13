@@ -15,7 +15,12 @@ function start() {
     snake = game.snake;
     head = snake.head;
 
-    document.addEventListener("keydown", changeDirection);
+    document.getElementById('down').onclick = () => { changeDirection('DOWN'); }
+    document.getElementById('up').onclick = () => { changeDirection('UP'); }
+    document.getElementById('left').onclick = () => { changeDirection('LEFT'); }
+    document.getElementById('right').onclick = () => { changeDirection('RIGHT'); }
+
+    document.addEventListener("keydown", handleKeydown);
     ticker = setInterval(update, 500);
     
     // TODO: Set initial size of snake while making sure it stays inside the board
@@ -36,30 +41,50 @@ function update() {
     canChangeDirection = true;
 }
 
-function changeDirection(e) {
+function handleKeydown(event) {
+    switch (event.code) {
+        case 'ArrowLeft':
+            changeDirection('LEFT');
+            break;
+        case 'ArrowRight':
+            changeDirection('RIGHT'); 
+            break;
+        case 'ArrowDown':
+            changeDirection('DOWN'); 
+            break;
+        case 'ArrowRight':
+            changeDirection('RIGHT'); 
+            break;
+    }
+}
+
+// gets a string indicating the new direction of the snake. 
+// This function is called after pressing a keyboard key or after 
+// clicking an arrow-key button a mobile device. 
+function changeDirection(dir) {
     if (!canChangeDirection) {
         return;
     }
-    switch (e.keyCode) {
-        case 37:
+    switch (dir) {
+        case 'LEFT':
             if (head.direction != 'RIGHT') {
                 head.setDirection('LEFT');
                 canChangeDirection = false;
             }
             break;
-        case 38:
+        case 'UP':
             if (head.direction != 'DOWN') {
                 head.setDirection('UP');
                 canChangeDirection = false;
             }
             break;
-        case 39:
+        case 'RIGHT':
             if (head.direction != 'LEFT') {
                 head.setDirection('RIGHT');
                 canChangeDirection = false;
             }
             break;
-        case 40:
+        case 'DOWN':
             if (head.direction != 'UP') {
                 head.setDirection('DOWN');
                 canChangeDirection = false;
