@@ -52,8 +52,8 @@ function handleKeydown(event) {
         case 'ArrowDown':
             changeDirection('DOWN'); 
             break;
-        case 'ArrowRight':
-            changeDirection('RIGHT'); 
+        case 'ArrowUp':
+            changeDirection('UP'); 
             break;
     }
 }
