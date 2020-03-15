@@ -93,7 +93,7 @@ class Snake {
      * body has the same position as that point. 
      * This method is currently only used by Game.render3 method. 
      */
-    isOccupied(x, y) {
+    occupies(x, y) {
         let node = head; 
         while (node !== null) {
             if (node.x === x && node.y === y) {

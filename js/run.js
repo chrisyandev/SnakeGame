@@ -4,6 +4,8 @@ let snake;
 let head;
 let ticker;
 
+const UPDATE_TIMEOUT = 200;
+
 // Without this flag, user can move in the direct opposite
 // direction (which is not what we want) if they press the
 // arrow keys quickly.
@@ -15,35 +17,49 @@ function start() {
     snake = game.snake;
     head = snake.head;
 
-    document.getElementById('down').onclick = () => { changeDirection('DOWN'); }
-    document.getElementById('up').onclick = () => { changeDirection('UP'); }
-    document.getElementById('left').onclick = () => { changeDirection('LEFT'); }
-    document.getElementById('right').onclick = () => { changeDirection('RIGHT'); }
+    document.getElementById('down').onclick = () => {
+        changeDirection('DOWN');
+    };
+    document.getElementById('up').onclick = () => {
+        changeDirection('UP');
+    };
+    document.getElementById('left').onclick = () => {
+        changeDirection('LEFT');
+    };
+    document.getElementById('right').onclick = () => {
+        changeDirection('RIGHT');
+    };
 
     document.addEventListener("keydown", handleKeydown);
-    ticker = setInterval(update, 500);
+    ticker = setInterval(update, UPDATE_TIMEOUT);
     
     // TODO: Set initial size of snake while making sure it stays inside the board
-    snake.move()
+    snake.move();
     snake.append();
-    snake.move()
+    snake.move();
     snake.append();
-    snake.move()
+    snake.move();
     snake.append();
 
-    board.create();
-
-    game.render();
+    // board.create();
+    // game.render();
 
     // For rendering the board using this render3() you need to 
-    // remove 'board.create()' 
-    // game.render3(); 
+    // remove 'board.create()'
+    game.render3();
 }
 
 function update() {
     snake.move();
-    game.render(); 
-    // game.render3();
+    let foodType = game.foodType(snake.head.x, snake.head.y);
+    if (foodType === 'GOOD') {
+        snake.append();
+        game.removeFood(snake.head.x, snake.head.y);
+    } else if (foodType === 'BAD') {
+        game.removeFood(snake.head.x, snake.head.y);
+    }
+    // game.render();
+    game.render3();
     canChangeDirection = true;
 }
 
@@ -73,25 +89,25 @@ function changeDirection(dir) {
     }
     switch (dir) {
         case 'LEFT':
-            if (head.direction != 'RIGHT') {
+            if (head.direction !== 'RIGHT') {
                 head.setDirection('LEFT');
                 canChangeDirection = false;
             }
             break;
         case 'UP':
-            if (head.direction != 'DOWN') {
+            if (head.direction !== 'DOWN') {
                 head.setDirection('UP');
                 canChangeDirection = false;
             }
             break;
         case 'RIGHT':
-            if (head.direction != 'LEFT') {
+            if (head.direction !== 'LEFT') {
                 head.setDirection('RIGHT');
                 canChangeDirection = false;
             }
             break;
         case 'DOWN':
-            if (head.direction != 'UP') {
+            if (head.direction !== 'UP') {
                 head.setDirection('DOWN');
                 canChangeDirection = false;
             }

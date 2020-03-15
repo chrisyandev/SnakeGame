@@ -1,7 +1,74 @@
 class Game {
+    SNAKE_BODY = '<img src="images/snake-body.png" alt="snake-body" />';
+    FLOOR = '<img src="images/floor-1.png" alt="floor"/>';
+    GOOD_FOOD = '<img src="images/egg.png" alt="good-food"/>';
+    BAD_FOOD = '<img src="images/bad-fruit.png" alt="bad-food" />';
+
+
     constructor(boardWidth, boardHeight, snakePosX, snakePosY, snakeDirection) {
         this.board = new Board(boardWidth, boardHeight);
         this.snake = new Snake(snakePosX, snakePosY, snakeDirection);
+        this.foods = [];
+
+        // This is necessary to do.
+        this.generateFoodEvery = this.generateFoodEvery.bind(this);
+        this.generateRandomInteger = this.generateRandomInteger.bind(this);
+        this.foodType = this.foodType.bind(this);
+        this.generateFood = this.generateFood.bind(this);
+        this.removeFood = this.removeFood.bind(this);
+        this.render3 = this.render3.bind(this);
+        this.generateFoodEvery();
+    }
+
+    /**
+     * Removes the food at cell [x, y]
+     */
+    removeFood(x, y) {
+        this.foods = this.foods.filter(food => !(food.x === x && food.y === y));
+        this.table.rows[y].cells[x].innerHTML = "";
+        this.table.rows[x].cells[y].innerHTML = this.FLOOR;
+    }
+
+    /**
+     * generates food every 'timeout' seconds. If the timeout is not specified,
+     * the default is 2 seconds.
+     */
+    generateFoodEvery(timeout) {
+        if (timeout === undefined)
+            timeout = 2000;
+        setInterval(this.generateFood, timeout);
+    }
+
+
+    /**
+     * Randomly generates food. The type of food (good, bad) is
+     * also chosen randomly.
+     */
+    generateFood() {
+        let rowNumber = this.generateRandomInteger(this.board.width);
+        let colNumber = this.generateRandomInteger(this.board.height);
+        let foodType = this.generateRandomInteger(2);
+        if (this.foodType(rowNumber, colNumber) === 'NONE'
+            && !this.snake.occupies(rowNumber, colNumber)) {
+            this.foods.push({
+                x: rowNumber,
+                y: colNumber,
+                type: foodType === 1 ? 'GOOD' : 'BAD'
+            });
+        }
+    }
+
+    /**
+     * Returns 'NONE' if the cell [x, y] doesn't contain any food. Returns 'GOOD'
+     * of the cell contains good food, and 'BAD' if the cell contains bad food.
+     */
+    foodType(x, y) {
+        for (const food of this.foods) {
+            if (food.x === x && food.y === y) {
+                return food.type;
+            }
+        }
+        return 'NONE';
     }
 
     /**
@@ -85,29 +152,28 @@ class Game {
 
     /**
      * Render option3, uses an html table to display the board.
-     * 
-     * How it works: 
-     *  It goes through every cell on the board and checks if that cell 
-     *  is occupied by the snake, if it is occupied it paints it changed the 
-     *  color of that cell to blue. We can also use an image element to 
-     *  display the snake.
-     * 
-     * This is not as efficient as the other two options (altough the difference
-     * is not even noticable because board is small), but it uses a 
-     * neater approach. 
-     */
+    */
     render3() {
         if (this.table === undefined) {
             this.createTable(); 
         }
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < this.board.width; i++) {
             let row = this.table.rows[i];
-            for (let j = 0; j < 10; j++) {
+            for (let j = 0; j < this.board.height; j++) {
                 let cell = row.cells[j];
-                if (this.snake.isOccupied(j, i)) {
-                    cell.style.backgroundColor = "red";
+                if (this.snake.occupies(j, i)) {
+                    cell.innerHTML = this.SNAKE_BODY;
                 } else {
-                    cell.style.backgroundColor = "blue";
+                    switch (this.foodType(j, i)) {
+                        case 'NONE':
+                            cell.innerHTML = this.FLOOR;
+                            break;
+                        case 'GOOD':
+                            cell.innerHTML = this.GOOD_FOOD;
+                            break;
+                        case 'BAD':
+                            cell.innerHTML = this.BAD_FOOD;
+                    }
                 }
             }
         }
@@ -116,9 +182,9 @@ class Game {
     // Helper method for render3
     createTable() {
         let tableEl = document.createElement('table');
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < this.board.width; i++) {
             let rowEl = document.createElement('tr');
-            for (let j = 0; j < 10; j++) {
+            for (let j = 0; j < this.board.height; j++) {
                 let cellEl = document.createElement('td');
                 rowEl.appendChild(cellEl);
             }
@@ -126,5 +192,12 @@ class Game {
         }
         this.table = tableEl; 
         document.body.appendChild(this.table); 
+    }
+
+    /**
+     * Generates a random integer between 0 and n. (inclusive, exclusive)
+     */
+    generateRandomInteger(n) {
+        return Math.floor(Math.random() * n);
     }
 }

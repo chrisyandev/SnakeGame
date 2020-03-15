@@ -3,6 +3,7 @@ class Board {
         this.width = width;
         this.height = height;
         this.cells = [];
+        this.foods = [];
     }
 
     /**
