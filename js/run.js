@@ -41,12 +41,7 @@ function start() {
     snake.move();
     snake.append();
 
-    // board.create();
-    // game.render();
-
-    // For rendering the board using this render3() you need to 
-    // remove 'board.create()'
-    game.render3();
+    game.render();
 }
 
 function update() {
@@ -58,8 +53,8 @@ function update() {
     } else if (foodType === 'BAD') {
         game.removeFood(snake.head.x, snake.head.y);
     }
-    // game.render();
-    game.render3();
+
+    game.render();
     canChangeDirection = true;
 }
 
@@ -80,9 +75,11 @@ function handleKeydown(event) {
     }
 }
 
-// gets a string indicating the new direction of the snake. 
-// This function is called after pressing a keyboard key or after 
-// clicking an arrow-key button a mobile device. 
+/**
+ * Gets a string indicating the new direction of the snake. 
+ * This function is called after pressing a keyboard key or 
+ * after clicking an arrow-key button a mobile device. 
+ */
 function changeDirection(dir) {
     if (!canChangeDirection) {
         return;
