@@ -1,5 +1,4 @@
 let game;
-let board;
 let snake;
 let head;
 let ticker;
@@ -13,7 +12,6 @@ let canChangeDirection = true;
 
 function start() {
     game = new Game(10, 10, 5, 7, 'UP');
-    board = game.board;
     snake = game.snake;
     head = snake.head;
 

@@ -6,11 +6,13 @@ class Game {
 
 
     constructor(boardWidth, boardHeight, snakePosX, snakePosY, snakeDirection) {
-        this.board = new Board(boardWidth, boardHeight);
+        this.boardWidth = boardWidth;
+        this.boardHeight = boardHeight;
         this.snake = new Snake(snakePosX, snakePosY, snakeDirection);
         this.foods = [];
 
-        // This is necessary to do.
+        // .bind(this) is necessary because the context of "this" is lost when
+        // using setInterval() in generateFoodEvery()
         this.generateFoodEvery = this.generateFoodEvery.bind(this);
         this.generateRandomInteger = this.generateRandomInteger.bind(this);
         this.foodType = this.foodType.bind(this);
@@ -45,8 +47,8 @@ class Game {
      * also chosen randomly.
      */
     generateFood() {
-        let rowNumber = this.generateRandomInteger(this.board.width);
-        let colNumber = this.generateRandomInteger(this.board.height);
+        let rowNumber = this.generateRandomInteger(this.boardWidth);
+        let colNumber = this.generateRandomInteger(this.boardHeight);
         let foodType = this.generateRandomInteger(2);
         if (this.foodType(rowNumber, colNumber) === 'NONE'
             && !this.snake.occupies(rowNumber, colNumber)) {
@@ -78,9 +80,9 @@ class Game {
         if (this.table === undefined) {
             this.createTable(); 
         }
-        for (let i = 0; i < this.board.width; i++) {
+        for (let i = 0; i < this.boardWidth; i++) {
             let row = this.table.rows[i];
-            for (let j = 0; j < this.board.height; j++) {
+            for (let j = 0; j < this.boardHeight; j++) {
                 let cell = row.cells[j];
                 if (this.snake.occupies(j, i)) {
                     cell.innerHTML = this.SNAKE_BODY;
@@ -105,9 +107,9 @@ class Game {
      */
     createTable() {
         let tableEl = document.createElement('table');
-        for (let i = 0; i < this.board.width; i++) {
+        for (let i = 0; i < this.boardWidth; i++) {
             let rowEl = document.createElement('tr');
-            for (let j = 0; j < this.board.height; j++) {
+            for (let j = 0; j < this.boardHeight; j++) {
                 let cellEl = document.createElement('td');
                 rowEl.appendChild(cellEl);
             }
