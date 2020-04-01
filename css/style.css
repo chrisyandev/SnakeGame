@@ -17,3 +17,24 @@ td {
     width: 32px;
     height: 32px;
 }
+
+#up{
+    display:block;
+    position: relative;
+    left:30vw;
+}
+#left{
+    display:inline;
+    position: relative;
+    left:1vw;
+}
+#right{
+    display:inline;
+    position: relative;
+    right:-50vw;
+}
+#down{
+    display:block;
+    position: relative;
+    left:30vw;
+}
