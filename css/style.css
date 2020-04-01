@@ -111,7 +111,7 @@ td {
         padding: 0;
         margin: 0;
         border: none;
-        width: inherit;
+        /* width: inherit; */
         object-fit: fill;
     }
     
@@ -160,3 +160,58 @@ td {
         position: relative;
         left:30vw;
     }
+
+    @media (min-width:1200px) {
+        td, tr, img  {
+            padding: 0;
+            margin: 0;
+            border: none;
+            /* width: inherit; */
+            object-fit: fill;
+        }
+        
+        
+        img{
+            /* height: 100%; */
+            object-fit: fill;
+        }
+        table {
+            table-layout: fixed;
+            border-collapse: collapse;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+            height: 50%;
+        }
+        
+        td {
+            line-height: 0;
+        }
+        
+        td {
+            width: 75px;
+            height: 75px;
+            /* display: inline; */
+        }
+        
+        #up{
+            display:block;
+            /* position: ; */
+            left:30vw;
+            bottom:0px;
+        }
+        #left{
+            display:inline;
+            position: relative;
+            left:1vw;
+        }
+        #right{
+            display:inline;
+            position: relative;
+            right:-50vw;
+        }
+        #down{
+            display:block;
+            position: relative;
+            left:30vw;
+        }
