@@ -15,18 +15,18 @@ function start() {
     snake = game.snake;
     head = snake.head;
 
-    document.getElementById('down').onclick = () => {
-        changeDirection('DOWN');
-    };
-    document.getElementById('up').onclick = () => {
-        changeDirection('UP');
-    };
-    document.getElementById('left').onclick = () => {
-        changeDirection('LEFT');
-    };
-    document.getElementById('right').onclick = () => {
-        changeDirection('RIGHT');
-    };
+    // document.getElementById('down').onclick = () => {
+    //     changeDirection('DOWN');
+    // };
+    // document.getElementById('up').onclick = () => {
+    //     changeDirection('UP');
+    // };
+    // document.getElementById('left').onclick = () => {
+    //     changeDirection('LEFT');
+    // };
+    // document.getElementById('right').onclick = () => {
+    //     changeDirection('RIGHT');
+    // };
 
     document.addEventListener("keydown", handleKeydown);
     ticker = setInterval(update, UPDATE_TIMEOUT);
