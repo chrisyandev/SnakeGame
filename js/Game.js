@@ -22,6 +22,15 @@ class Game {
         this.generateFoodEvery();
     }
 
+	/**
+	 * Returns true if the head of the snake is out of the board. 
+	 */ 
+	isSnakeOutOfBounds() {
+		return (this.snake.head.x < 0 || this.snake.head.y < 0 
+			|| this.snake.head.y > this.boardHeight 
+			|| this.snake.head.x > this.boardWidth); 
+	}
+
     /**
      * Removes the food at cell [x, y]
      */

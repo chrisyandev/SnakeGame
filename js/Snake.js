@@ -88,6 +88,20 @@ class Snake {
         this.length++;
     }
 
+	/** 
+	 * It returns true if the current location of the head is same as location of 
+	 * one of the parts of the body. 
+	 **/
+	hasBitItself() {
+		let node = head.next; 
+		while (node !== null) {
+			if (node.x === head.x && node.y === head.y) {
+				return true; 
+			}
+		}
+		return false; 
+	}
+
     /**
      * Gets coordinates of a point and returns true if a part of the snake's 
      * body has the same position as that point. 
