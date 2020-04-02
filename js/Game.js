@@ -1,8 +1,8 @@
 class Game {
-    SNAKE_BODY = '<img src="images/snake-body.png" alt="snake-body" />';
-    FLOOR = '<img src="images/floor-1.png" alt="floor"/>';
-    GOOD_FOOD = '<img src="images/egg.png" alt="good-food"/>';
-    BAD_FOOD = '<img src="images/bad-fruit.png" alt="bad-food" />';
+    SNAKE_BODY = 'url("images/snake-body.png") center / 100% no-repeat';
+    FLOOR = 'url("images/floor-1.png") center / 100% no-repeat';
+    GOOD_FOOD = 'url("images/egg.png") center / 100% no-repeat';
+    BAD_FOOD = 'url("images/bad-fruit.png") center / 100% no-repeat';
 
 
     constructor(boardWidth, boardHeight, snakePosX, snakePosY, snakeDirection) {
@@ -27,8 +27,7 @@ class Game {
      */
     removeFood(x, y) {
         this.foods = this.foods.filter(food => !(food.x === x && food.y === y));
-        this.table.rows[y].cells[x].innerHTML = "";
-        this.table.rows[x].cells[y].innerHTML = this.FLOOR;
+        this.table.rows[x].cells[y].style.background = this.FLOOR;
     }
 
     /**
@@ -85,17 +84,17 @@ class Game {
             for (let j = 0; j < this.boardHeight; j++) {
                 let cell = row.cells[j];
                 if (this.snake.occupies(j, i)) {
-                    cell.innerHTML = this.SNAKE_BODY;
+                    cell.style.background = this.SNAKE_BODY;
                 } else {
                     switch (this.foodType(j, i)) {
                         case 'NONE':
-                            cell.innerHTML = this.FLOOR;
+                            cell.style.background = this.FLOOR;
                             break;
                         case 'GOOD':
-                            cell.innerHTML = this.GOOD_FOOD;
+                            cell.style.background = this.GOOD_FOOD;
                             break;
                         case 'BAD':
-                            cell.innerHTML = this.BAD_FOOD;
+                            cell.style.background = this.BAD_FOOD;
                     }
                 }
             }
