@@ -5,3 +5,11 @@ table {
     min-height: 300px;
     margin: 0 auto;
 }
+
+#arrow-buttons {
+    text-align: center;
+}
+
+#arrow-buttons img {
+    margin: 10px;
+}

@@ -22,14 +22,14 @@ class Game {
         this.generateFoodEvery();
     }
 
-	/**
-	 * Returns true if the head of the snake is out of the board. 
-	 */ 
-	isSnakeOutOfBounds() {
-		return (this.snake.head.x < 0 || this.snake.head.y < 0 
-			|| this.snake.head.y > this.boardHeight 
-			|| this.snake.head.x > this.boardWidth); 
-	}
+    /**
+     * Returns true if the head of the snake is out of the board. 
+     */
+    isSnakeOutOfBounds() {
+        return (this.snake.head.x < 0 || this.snake.head.y < 0 ||
+            this.snake.head.y > this.boardHeight ||
+            this.snake.head.x > this.boardWidth);
+    }
 
     /**
      * Removes the food at cell [x, y]
@@ -58,8 +58,8 @@ class Game {
         let rowNumber = this.generateRandomInteger(this.boardWidth);
         let colNumber = this.generateRandomInteger(this.boardHeight);
         let foodType = this.generateRandomInteger(2);
-        if (this.foodType(rowNumber, colNumber) === 'NONE'
-            && !this.snake.occupies(rowNumber, colNumber)) {
+        if (this.foodType(rowNumber, colNumber) === 'NONE' &&
+            !this.snake.occupies(rowNumber, colNumber)) {
             this.foods.push({
                 x: rowNumber,
                 y: colNumber,
@@ -86,7 +86,7 @@ class Game {
      */
     render() {
         if (this.table === undefined) {
-            this.createTable(); 
+            this.createTable();
         }
         for (let i = 0; i < this.boardWidth; i++) {
             let row = this.table.rows[i];
@@ -123,8 +123,8 @@ class Game {
             }
             tableEl.appendChild(rowEl);
         }
-        this.table = tableEl; 
-        document.body.appendChild(this.table); 
+        this.table = tableEl;
+        document.body.appendChild(this.table);
     }
 
     /**
