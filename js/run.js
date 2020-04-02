@@ -54,13 +54,31 @@ function update() {
         game.removeFood(snake.head.x, snake.head.y);
     }
 
-	// check if the player lost in the last move. 
-	if (snake.hasBitItself() || game.isSnakeOutOfBounds()) {
-		alert("You lost!");
-	}
+    // check if the player lost in the last move. 
+    if (snake.hasBitItself() || game.isSnakeOutOfBounds()) {
+        // updating the player's record in the local storage. 
+        localStorage.setItem('record',
+            Math.max(snake.size(), parseInt(localStorage.getItem('record'))));
+
+        if (localStorage.getItem('name') === null) {
+            askName();
+        } else {
+            document.getElementById('user-status').innerHTML =
+                localStorage.getItem('name') + ", Record: "
+                + localStorage.getItem('record');
+        }
+    }
 
     game.render();
     canChangeDirection = true;
+}
+
+function upateDatabase() {
+    
+}
+
+function askName() {
+
 }
 
 function handleKeydown(event) {

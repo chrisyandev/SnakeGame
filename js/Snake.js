@@ -77,6 +77,20 @@ class Snake {
     }
 
     /**
+     * Size is the number of body parts including the head. 
+     * It represents the player's score. 
+     */
+    size() {
+        let score = 0;
+        let node = head; 
+        while (node !== null) {
+            score++; 
+            node = node.next; 
+        }
+        return score; 
+    }
+
+    /**
      * Places a new node where snake's tail was before last move.
      * Must call move() at least once before each append or the nodes
      * will overlap.
@@ -97,7 +111,8 @@ class Snake {
 		while (node !== null) {
 			if (node.x === head.x && node.y === head.y) {
 				return true; 
-			}
+            }
+            node = node.next; 
 		}
 		return false; 
 	}
