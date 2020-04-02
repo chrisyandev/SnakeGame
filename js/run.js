@@ -14,22 +14,6 @@ function start() {
     game = new Game(10, 10, 5, 7, 'UP');
     snake = game.snake;
     head = snake.head;
-
-    // document.getElementById('down').onclick = () => {
-    //     changeDirection('DOWN');
-    // };
-    // document.getElementById('up').onclick = () => {
-    //     changeDirection('UP');
-    // };
-    // document.getElementById('left').onclick = () => {
-    //     changeDirection('LEFT');
-    // };
-    // document.getElementById('right').onclick = () => {
-    //     changeDirection('RIGHT');
-    // };
-
-    document.addEventListener("keydown", handleKeydown);
-    ticker = setInterval(update, UPDATE_TIMEOUT);
     
     // TODO: Set initial size of snake while making sure it stays inside the board
     snake.move();
@@ -40,6 +24,10 @@ function start() {
     snake.append();
 
     game.render();
+
+    createArrowButtons();
+    document.addEventListener("keydown", handleKeydown);
+    ticker = setInterval(update, UPDATE_TIMEOUT);
 }
 
 function update() {
@@ -54,6 +42,40 @@ function update() {
 
     game.render();
     canChangeDirection = true;
+}
+
+function createArrowButtons() {
+    let arrowLeft = document.createElement('IMG');
+    arrowLeft.src = 'images/arrow-left.png';
+    arrowLeft.onclick = () => {
+        changeDirection('LEFT');
+    };
+
+    let arrowRight = document.createElement('IMG');
+    arrowRight.src = 'images/arrow-right.png';
+    arrowRight.onclick = () => {
+        changeDirection('RIGHT');
+    };
+
+    let arrowUp = document.createElement('IMG');
+    arrowUp.src = 'images/arrow-up.png';
+    arrowUp.onclick = () => {
+        changeDirection('UP');
+    };
+
+    let arrowDown = document.createElement('IMG');
+    arrowDown.src = 'images/arrow-down.png';
+    arrowDown.onclick = () => {
+        changeDirection('DOWN');
+    };
+
+    let div = document.createElement('DIV');
+    div.id = 'arrow-buttons';
+    div.appendChild(arrowLeft);
+    div.appendChild(arrowRight);
+    div.appendChild(arrowUp);
+    div.appendChild(arrowDown);
+    document.getElementById('container').appendChild(div);
 }
 
 function handleKeydown(event) {

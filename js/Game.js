@@ -114,8 +114,8 @@ class Game {
             }
             tableEl.appendChild(rowEl);
         }
-        this.table = tableEl; 
-        document.body.appendChild(this.table); 
+        this.table = tableEl;
+        document.getElementById('container').appendChild(this.table);
     }
 
     /**
@@ -124,4 +124,5 @@ class Game {
     generateRandomInteger(n) {
         return Math.floor(Math.random() * n);
     }
+
 }
