@@ -80,9 +80,11 @@ function update() {
         upateDatabase();
     }
 
-    document.getElementById('user-status').innerHTML =
-        localStorage.getItem('name') + ", Record: " +
-        localStorage.getItem('record');
+    if (localStorage.getItem('name') !== null) {
+        document.getElementById('user-status').innerHTML =
+            localStorage.getItem('name') + ", Record: " +
+            localStorage.getItem('record');
+    }
 
     game.render();
     canChangeDirection = true;
