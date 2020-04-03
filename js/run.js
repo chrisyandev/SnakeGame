@@ -70,11 +70,7 @@ function update() {
         
         if (localStorage.getItem('name') === null) {
             askName();
-        } else {
-            document.getElementById('user-status').innerHTML =
-                localStorage.getItem('name') + ", Record: " +
-                localStorage.getItem('record');
-        }
+        } 
 
         alert("You lost!");
         clearInterval(ticker); 
@@ -83,6 +79,10 @@ function update() {
 
         upateDatabase();
     }
+
+    document.getElementById('user-status').innerHTML =
+        localStorage.getItem('name') + ", Record: " +
+        localStorage.getItem('record');
 
     game.render();
     canChangeDirection = true;
