@@ -37,8 +37,8 @@ function start() {
     snake.move();
     snake.append();
 
+    document.getElementById('container').innerHTML = "";
     game.render();
-
     createArrowButtons();
     document.addEventListener("keydown", handleKeydown);
     ticker = setInterval(update, UPDATE_TIMEOUT);
