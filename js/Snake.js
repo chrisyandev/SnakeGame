@@ -35,7 +35,19 @@ class Part {
 /** Creates a singly-linked list. */
 class Snake {
     constructor(x, y, direction) {
+        this.initialX = x; 
+        this.initialY = y; 
+        this.initialDirection = direction; 
         this.head = new Head(x, y, direction);
+        this.tail = this.head;
+        this.tailLastPosX = undefined;
+        this.tailLastPosY = undefined;
+        this.length = 1;
+    }
+
+    // This is called when the player has lost and wants to play again. 
+    reset() {
+        this.head = new Head(this.initialX, this.initialY, this.initialDirection);
         this.tail = this.head;
         this.tailLastPosX = undefined;
         this.tailLastPosY = undefined;

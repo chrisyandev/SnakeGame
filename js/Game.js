@@ -22,6 +22,15 @@ class Game {
         this.generateFoodEvery();
     }
 
+    reset() {
+        // clearInterval(this.foodGenerationInterval); 
+        for (let i = 0; i < this.boardWidth; i++) {
+            for (let j = 0; j < this.boardHeight; j++) {
+                this.removeFood(i, j); 
+            }
+        }
+    }
+
     /**
      * Returns true if the head of the snake is out of the board. 
      */
@@ -46,7 +55,7 @@ class Game {
     generateFoodEvery(timeout) {
         if (timeout === undefined)
             timeout = 2000;
-        setInterval(this.generateFood, timeout);
+        this.foodGenerationInterval = setInterval(this.generateFood, timeout);
     }
 
 

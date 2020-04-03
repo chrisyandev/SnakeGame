@@ -10,7 +10,7 @@ var firebaseConfig = {
     projectId: "snake-d38c4",
     storageBucket: "snake-d38c4.appspot.com",
     messagingSenderId: "631543576662",
-appId: "1:631543576662:web:7925dff3bd55017beb63f7"
+    appId: "1:631543576662:web:7925dff3bd55017beb63f7"
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -59,17 +59,27 @@ function update() {
 
     // check if the player lost in the last move. 
     if (snake.hasBitItself() || game.isSnakeOutOfBounds()) {
-        // updating the player's record in the local storage. 
-        localStorage.setItem('record',
+        // updating the player's record in the local storage.
+        if (localStorage.getItem('record') !== null) {
+            localStorage.setItem('record',
             Math.max(snake.size(), parseInt(localStorage.getItem('record'))));
-
+        } else {
+            localStorage.setItem('record', snake.size());
+        }
+        
+        
         if (localStorage.getItem('name') === null) {
             askName();
         } else {
             document.getElementById('user-status').innerHTML =
-                localStorage.getItem('name') + ", Record: "
-                + localStorage.getItem('record');
+                localStorage.getItem('name') + ", Record: " +
+                localStorage.getItem('record');
         }
+
+        alert("You lost!");
+        clearInterval(ticker); 
+        document.body.innerHTML = '<h1 id="user-status"></h1><div id="container"></div>';
+        start();
 
         upateDatabase();
     }
@@ -79,17 +89,28 @@ function update() {
 }
 
 function upateDatabase() {
+    // if the document is already created, update it
+    if (localStorage.getItem('doc_id') !== null) {
+        db.collection('names').doc(localStorage.getItem('doc_id')).update({
+            name: localStorage.getItem('name'),
+            score: parseInt(localStorage.getItem('score'))
+        }).then(() => console.log("Updated the document"));
+        return;
+    }
+
+    // the document doesn't exist, so add a new one. 
     db.collection('names').add({
-        name: localStorage.getItem('name'), 
-        score: parseInt(localStorage.getItem('score')); 
-    }).then(function(docRef) {
-        console.log("Document written with ID: ", docRef.id);
+        name: localStorage.getItem('name'),
+        score: parseInt(localStorage.getItem('score'))
+    }).then(function (docRef) {
+        console.log("Added documetn with ID: ", docRef.id);
+        localStorage.setItem('doc_id', docRef.id); 
     })
 }
 
 function askName() {
-    let name = promt("What is you name?");
-    localStorage.setItem('name', name); 
+    let name = prompt("What is you name?");
+    localStorage.setItem('name', name);
 }
 
 /** Creates buttons for controlling the snake. */
