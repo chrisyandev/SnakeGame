@@ -16,20 +16,19 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 var db = firebase.firestore();
 
-const UPDATE_TIMEOUT = 200;
+const UPDATE_TIMEOUT = 250;
 
 // Without this flag, user can move in the direct opposite
 // direction (which is not what we want) if they press the
 // arrow keys quickly.
 let canChangeDirection = true;
 
-/** Happens when the game starts. */
-function start() {
+/** Initial setup. */
+function initial() {
     game = new Game(10, 10, 5, 7, "UP");
     snake = game.snake;
     head = snake.head;
 
-    // TODO: Set initial size of snake while making sure it stays inside the board
     snake.move();
     snake.append();
     snake.move();
@@ -38,10 +37,32 @@ function start() {
     snake.append();
 
     document.getElementById('container').innerHTML = "";
+
+    createPlayMessage();
     game.render();
-    createArrowButtons();
     document.addEventListener("keydown", handleKeydown);
+    createArrowButtons();
+    
+    document.body.onclick = start;
+}
+
+/** Starts the game. */
+function start() {
+    document.body.onclick = '';
+    document.getElementById('play-message').remove();
+
     ticker = setInterval(update, UPDATE_TIMEOUT);
+}
+
+/** Message before game is started. */
+function createPlayMessage() {
+    let playMessage = document.createElement('P');
+    playMessage.id = 'play-message';
+    playMessage.innerHTML = 'Click anywhere to play';
+    playMessage.style.textAlign = 'center';
+    playMessage.style.fontFamily = 'Arial, Helvetica, sans-serif';
+    playMessage.style.fontSize = '20pt';
+    document.getElementById('container').appendChild(playMessage);
 }
 
 /** Updates the game. */
@@ -75,7 +96,7 @@ function update() {
         alert("You lost!");
         clearInterval(ticker); 
         document.body.innerHTML = '<h1 id="user-status"></h1><div id="container"></div>';
-        start();
+        initial();
 
         updateDatabase();
     }
@@ -203,4 +224,4 @@ function changeDirection(dir) {
     }
 }
 
-window.onload = start;
+window.onload = initial;
