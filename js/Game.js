@@ -133,7 +133,7 @@ class Game {
             tableEl.appendChild(rowEl);
         }
         this.table = tableEl;
-        document.body.appendChild(this.table);
+        document.getElementById('container').appendChild(this.table);
     }
 
     /**
