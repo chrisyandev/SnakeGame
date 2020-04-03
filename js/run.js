@@ -74,7 +74,7 @@ function update() {
 
         alert("You lost!");
         clearInterval(ticker); 
-        document.body.innerHTML = '<h1 id="user-status"></h1><div id="container"></div>';
+        document.body.innerHTML = '<h1 id="user-status"><div id="scoreboard"></div></h1><div id="container"></div>';
         start();
 
         upateDatabase();
@@ -93,7 +93,7 @@ function upateDatabase() {
     if (localStorage.getItem('doc_id') !== null) {
         db.collection('names').doc(localStorage.getItem('doc_id')).update({
             name: localStorage.getItem('name'),
-            score: parseInt(localStorage.getItem('score'))
+            score: parseInt(localStorage.getItem('record'))
         }).then(() => console.log("Updated the document"));
         return;
     }
@@ -105,6 +105,15 @@ function upateDatabase() {
     }).then(function (docRef) {
         console.log("Added documetn with ID: ", docRef.id);
         localStorage.setItem('doc_id', docRef.id); 
+    })
+}
+
+function showTopPlayers() {
+    let topPlayers = db.collection('names').orderBy('score').limit(10).get(); 
+    let scoreBoard = document.getElementById('scoreboard'); 
+    topPlayers.forEach(play => {
+        console.log(player); 
+        scoreBoard.innerHTML += '<br>' + player.name; 
     })
 }
 
