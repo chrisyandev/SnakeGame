@@ -42,6 +42,7 @@ function initial() {
     game.render();
     document.addEventListener("keydown", handleKeydown);
     createArrowButtons();
+    createScoreboard();
     
     document.body.onclick = start;
 }
@@ -53,6 +54,17 @@ function start() {
     game.startFoodGenerationInterval(); 
 
     ticker = setInterval(update, UPDATE_TIMEOUT);
+}
+
+/** Creates a scoreboard. */
+function createScoreboard() {
+    let scoreboard = document.createElement('DIV');
+    scoreboard.innerHTML = 'REMOVE THIS TEXT';
+    scoreboard.style.textAlign = 'center';
+    scoreboard.style.margin = '50px auto';
+    scoreboard.style.fontFamily = 'Arial, Helvetica, sans-serif';
+    scoreboard.style.fontSize = '18pt';
+    document.getElementById('container').appendChild(scoreboard);
 }
 
 /** Message before game is started. */
