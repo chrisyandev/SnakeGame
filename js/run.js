@@ -110,12 +110,12 @@ function update() {
             askName();
         } 
 
-        clearInterval(ticker); 
+        clearInterval(ticker);
+        game.clearFoodGenerationInterval();
         alert("You lost!");
         document.body.innerHTML = '<h1 id="user-status"></h1><div id="scoreboard"></div><div id="container"></div>';
         initial();
 
-        game.clearFoodGenerationInterval(); 
         updateDatabase();
         showTopPlayers(); 
     }
