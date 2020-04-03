@@ -6,6 +6,7 @@ class Head {
         this.next = null;
     }
 
+    /** A pointer to the cell the snake will move to next. */
     nextPosition() {
         switch (this.direction) {
             case 'UP':
@@ -19,6 +20,7 @@ class Head {
         }
     }
 
+    /** Sets the direction. */
     setDirection(direction) {
         this.direction = direction;
     }
@@ -54,6 +56,7 @@ class Snake {
         this.length = 1;
     }
 
+    /** Moves the head to the next position. */
     move() {
         let nextPosition = this.head.nextPosition();
         this.shift(this.head, nextPosition.x, nextPosition.y);
