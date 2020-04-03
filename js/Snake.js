@@ -47,6 +47,10 @@ class Snake {
         this.length = 1;
     }
 
+    getLength() {
+        return this.length;
+    }
+
     // This is called when the player has lost and wants to play again. 
     reset() {
         this.head = new Head(this.initialX, this.initialY, this.initialDirection);

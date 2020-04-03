@@ -2,6 +2,7 @@ let game;
 let snake;
 let head;
 let ticker;
+let currentScore;
 
 var firebaseConfig = {
     apiKey: "AIzaSyDf3sskTnLBowdxipepIzzd7jozfIv0YxA",
@@ -29,12 +30,7 @@ function initial() {
     snake = game.snake;
     head = snake.head;
 
-    snake.move();
-    snake.append();
-    snake.move();
-    snake.append();
-    snake.move();
-    snake.append();
+    currentScore = snake.getLength();
 
     document.getElementById('container').innerHTML = "";
 
@@ -50,7 +46,7 @@ function initial() {
 /** Starts the game. */
 function start() {
     document.body.onclick = '';
-    document.getElementById('play-message').remove();
+    document.getElementById('play-message').innerHTML = 'Score (snake length): ' + currentScore;
     game.startFoodGenerationInterval(); 
 
     ticker = setInterval(update, UPDATE_TIMEOUT);
@@ -87,11 +83,13 @@ function createPlayMessage() {
 /** Updates the game. */
 function update() {
     snake.move();
-
+    
     // check if the snake ate fruit in the last move. 
     let foodType = game.foodType(snake.head.x, snake.head.y);
     if (foodType === "GOOD") {
         snake.append();
+        currentScore++;
+        document.getElementById('play-message').innerHTML = 'Score (snake length): ' + currentScore;
         game.removeFood(snake.head.x, snake.head.y);
     } else if (foodType === "BAD") {
         game.removeFood(snake.head.x, snake.head.y);
@@ -114,7 +112,7 @@ function update() {
 
         clearInterval(ticker); 
         alert("You lost!");
-        document.body.innerHTML = '<h1 id="user-status"></h1><div id="scoreboard"><h2>Score Board</h2></div><div id="container"></div>';
+        document.body.innerHTML = '<h1 id="user-status"></h1><div id="scoreboard"></div><div id="container"></div>';
         initial();
 
         game.clearFoodGenerationInterval(); 
@@ -198,6 +196,7 @@ function createArrowButtons() {
 
 /** Allows arrow keys to control the snake. */
 function handleKeydown(event) {
+    event.preventDefault();
     switch (event.code) {
         case "ArrowLeft":
             changeDirection("LEFT");
