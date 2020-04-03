@@ -57,9 +57,15 @@ function start() {
 }
 
 /** Creates a scoreboard. */
-function createScoreboard() {
+async function createScoreboard() {
     let scoreboard = document.createElement('DIV');
-    scoreboard.innerHTML = 'REMOVE THIS TEXT';
+    let topPlayers = await db.collection('names').orderBy('score').limit(10).get(); 
+    topPlayers.docs.reverse().forEach(player => {
+        console.log(player.data()); 
+        scoreboard.innerHTML += '<br>' + player.data().name + ' '
+            + player.data().score; 
+    })
+    // scoreboard.innerHTML = 'REMOVE THIS TEXT';
     scoreboard.style.textAlign = 'center';
     scoreboard.style.margin = '50px auto';
     scoreboard.style.fontFamily = 'Arial, Helvetica, sans-serif';
@@ -147,13 +153,7 @@ function updateDatabase() {
 }
 
 async function showTopPlayers() {
-    let topPlayers = await db.collection('names').orderBy('score').limit(10).get();
-    let scoreBoard = document.getElementById('scoreboard'); 
-    topPlayers.docs.reverse().forEach(player => {
-        console.log(player.data()); 
-        scoreBoard.innerHTML += '<br>' + player.data().name + ' '
-            + player.data().score; 
-    })
+    
 }
 
 function askName() {
