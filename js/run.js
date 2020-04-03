@@ -50,6 +50,7 @@ function initial() {
 function start() {
     document.body.onclick = '';
     document.getElementById('play-message').remove();
+    game.startFoodGenerationInterval(); 
 
     ticker = setInterval(update, UPDATE_TIMEOUT);
 }
@@ -93,12 +94,14 @@ function update() {
             askName();
         } 
 
-        alert("You lost!");
         clearInterval(ticker); 
-        document.body.innerHTML = '<h1 id="user-status"></h1><div id="container"></div>';
+        alert("You lost!");
+        document.body.innerHTML = '<h1 id="user-status"></h1><div id="scoreboard"><h2>Score Board</h2></div><div id="container"></div>';
         initial();
 
+        game.clearFoodGenerationInterval(); 
         updateDatabase();
+        showTopPlayers(); 
     }
 
     if (localStorage.getItem('name') !== null) {
@@ -124,19 +127,20 @@ function updateDatabase() {
     // the document doesn't exist, so add a new one. 
     db.collection('names').add({
         name: localStorage.getItem('name'),
-        score: parseInt(localStorage.getItem('score'))
+        score: parseInt(localStorage.getItem('record'))
     }).then(function (docRef) {
         console.log("Added documetn with ID: ", docRef.id);
         localStorage.setItem('doc_id', docRef.id); 
     })
 }
 
-function showTopPlayers() {
-    let topPlayers = db.collection('names').orderBy('score').limit(10).get(); 
+async function showTopPlayers() {
+    let topPlayers = await db.collection('names').orderBy('score').limit(10).get();
     let scoreBoard = document.getElementById('scoreboard'); 
-    topPlayers.forEach(play => {
-        console.log(player); 
-        scoreBoard.innerHTML += '<br>' + player.name; 
+    topPlayers.docs.reverse().forEach(player => {
+        console.log(player.data()); 
+        scoreBoard.innerHTML += '<br>' + player.data().name + ' '
+            + player.data().score; 
     })
 }
 

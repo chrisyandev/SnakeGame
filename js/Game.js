@@ -3,6 +3,7 @@ class Game {
     FLOOR = 'url("images/floor-1.png") center / 100% no-repeat';
     GOOD_FOOD = 'url("images/egg.png") center / 100% no-repeat';
     BAD_FOOD = 'url("images/bad-fruit.png") center / 100% no-repeat';
+    SNAKE_HEAD = 'url("images/snake-head.png") center / 100% no-repeat';
 
 
     constructor(boardWidth, boardHeight, snakePosX, snakePosY, snakeDirection) {
@@ -22,12 +23,12 @@ class Game {
         this.generateFoodEvery();
     }
 
-    reset() {
-        for (let i = 0; i < this.boardWidth; i++) {
-            for (let j = 0; j < this.boardHeight; j++) {
-                this.removeFood(i, j); 
-            }
-        }
+    clearFoodGenerationInterval() {
+        clearInterval(this.foodGenerationInterval); 
+    }
+
+    startFoodGenerationInterval() {
+        this.generateFoodEvery(); 
     }
 
     /**
@@ -101,7 +102,11 @@ class Game {
             for (let j = 0; j < this.boardHeight; j++) {
                 let cell = row.cells[j];
                 if (this.snake.occupies(j, i)) {
-                    cell.style.background = this.SNAKE_BODY;
+                    if (this.snake.head.x === j && this.snake.head.y === i) {
+                        cell.style.background = this.SNAKE_HEAD;
+                    } else {
+                        cell.style.background = this.SNAKE_BODY;
+                    }                    
                 } else {
                     switch (this.foodType(j, i)) {
                         case 'NONE':
