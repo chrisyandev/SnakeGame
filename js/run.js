@@ -77,7 +77,7 @@ function update() {
         document.body.innerHTML = '<h1 id="user-status"></h1><div id="container"></div>';
         start();
 
-        upateDatabase();
+        updateDatabase();
     }
 
     document.getElementById('user-status').innerHTML =
@@ -88,7 +88,7 @@ function update() {
     canChangeDirection = true;
 }
 
-function upateDatabase() {
+function updateDatabase() {
     // if the document is already created, update it
     if (localStorage.getItem('doc_id') !== null) {
         db.collection('names').doc(localStorage.getItem('doc_id')).update({

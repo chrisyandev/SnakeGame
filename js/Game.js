@@ -23,7 +23,6 @@ class Game {
     }
 
     reset() {
-        // clearInterval(this.foodGenerationInterval); 
         for (let i = 0; i < this.boardWidth; i++) {
             for (let j = 0; j < this.boardHeight; j++) {
                 this.removeFood(i, j); 
