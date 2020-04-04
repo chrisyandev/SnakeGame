@@ -20,7 +20,7 @@ class Game {
         this.generateFood = this.generateFood.bind(this);
         this.removeFood = this.removeFood.bind(this);
         this.render = this.render.bind(this);
-        this.generateFoodEvery();
+
     }
 
     clearFoodGenerationInterval() {
